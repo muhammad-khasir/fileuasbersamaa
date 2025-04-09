@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Pesanan Berhasil - Ragam Gaya</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+
+    <!-- banner -->
+    <div class="page-heading header-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Pesanan Berhasil</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- body isian dari form-->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mb-5">
+                <h2>Terima Kasih!</h2>
+                <p>Pesanan Anda telah diterima. Berikut adalah detail pesanan Anda:</p>
+                <div id="order-details" class="text-left"></div>
+                <button onclick="printPDF()" class="btn btn-success mt-3">Cetak Struk</button>
+                <a href="index.html" class="btn btn-primary mt-3">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- script untuk masukkan dari form input sebelumnya agar tampil di tab ini -->
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            let details = '<ul class="list-group">';
+            const labels = {
+                "name": "Nama Anda",
+                "address": "Alamat Anda",
+                "phone": "No. Telepon",
+                "size": "Ukuran Baju",
+                "color": "Warna Baju",
+                "payment": "Metode Pembayaran",
+                "quantity": "Jumlah Pembelian",
+                "total-price": "Total Harga"
+            };
+            params.forEach((value, key) => {
+                const label = labels[key] || key;
+                details += `<li class="list-group-item"><strong>${label}:</strong> ${value}</li>`;
+            });
+            details += '</ul>';
+            document.getElementById('order-details').innerHTML = details;
+        }
+        window.onload = getQueryParams;
+
+        function printPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Detail Pesanan", 10, 10);
+            let y = 20;
+            document.querySelectorAll("#order-details li").forEach((item) => {
+                doc.text(item.innerText, 10, y);
+                y += 10;
+            });
+            doc.save("Pesanan_Berhasil.pdf");
+        }
+    </script>
+
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/owl-carousel.js"></script>
+    <script src="assets/js/counter.js"></script>
+    <script src="assets/js/custom.js"></script>
+</body>
+
+</html>
